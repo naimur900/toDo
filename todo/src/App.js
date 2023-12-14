@@ -8,10 +8,14 @@ export const ACTIONS = {
   UPDATE: "update-todo",
 };
 
+// const updateTodo= (todo)=>{
+
+// }
+
 const reducer = (todos, action) => {
   switch (action.type) {
     case ACTIONS.ADD:
-      return [...todos, newTodo(action.payload.name)];
+      return [...todos,  { id: Date.now(), name: action.payload.name, complete: false, date: date.getDate(), day: weekday[date.getDay()], hour: date.getHours(), minutes: date.getMinutes(), month: date.getMonth()}];
     case ACTIONS.TOGGLE:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
@@ -24,16 +28,17 @@ const reducer = (todos, action) => {
         return todo.id !== action.payload.id;
       });
     case ACTIONS.UPDATE:
-      return;
+      return todos.map(todo=>{
+        if(todo.id === action.payload.id){
+          return { ...todo, name: action.payload.name }
+        }
+      });
     default:
       console.log("Ekhane");
       return todos;
   }
 };
 
-const newTodo = (name) => {
-  return { id: Date.now(), name: name, complete: false };
-};
 
 const App = () => {
   const [name, setName] = useState("");
@@ -74,6 +79,7 @@ const App = () => {
   );
 };
 
-let nextId = 0;
+const date = new Date()
+const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
 
 export default App;
