@@ -8,14 +8,22 @@ export const ACTIONS = {
   UPDATE: "update-todo",
 };
 
-// const updateTodo= (todo)=>{
-
-// }
-
 const reducer = (todos, action) => {
   switch (action.type) {
     case ACTIONS.ADD:
-      return [...todos,  { id: Date.now(), name: action.payload.name, complete: false, date: date.getDate(), day: weekday[date.getDay()], hour: date.getHours(), minutes: date.getMinutes(), month: date.getMonth()}];
+      return [
+        ...todos,
+        {
+          id: Date.now(),
+          name: action.payload.name,
+          complete: false,
+          date: date.getDate(),
+          day: weekday[date.getDay()],
+          hour: date.getHours(),
+          minutes: date.getMinutes(),
+          month: date.getMonth(),
+        },
+      ];
     case ACTIONS.TOGGLE:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
@@ -28,9 +36,9 @@ const reducer = (todos, action) => {
         return todo.id !== action.payload.id;
       });
     case ACTIONS.UPDATE:
-      return todos.map(todo=>{
-        if(todo.id === action.payload.id){
-          return { ...todo, name: action.payload.name }
+      return todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return { ...todo, name: action.payload.name };
         }
       });
     default:
@@ -39,14 +47,29 @@ const reducer = (todos, action) => {
   }
 };
 
-
 const App = () => {
   const [name, setName] = useState("");
-  const [todos, dispatch] = useReducer(reducer, []);
+  const [todos, dispatch] = useReducer(reducer, [{id: 1,
+    name: "Morning Walk",
+    complete: false,
+    date: date.getDate(),
+    day: weekday[date.getDay()],
+    hour: date.getHours(),
+    minutes: date.getMinutes(),
+    month: date.getMonth()},{id: 2,
+      name: "Complete the assignment",
+      complete: false,
+      date: date.getDate(),
+      day: weekday[date.getDay()],
+      hour: date.getHours(),
+      minutes: date.getMinutes(),
+      month: date.getMonth(),}]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({ type: ACTIONS.ADD, payload: { name: name } });
+    if (name.length > 1) {
+      dispatch({ type: ACTIONS.ADD, payload: { name: name } });
+    }
     setName("");
   };
 
@@ -54,10 +77,10 @@ const App = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="flex items-center justify-center mt-20 gap-9"
+        className="flex flex-col justify-center items-center mt-20 gap-6 sm:flex-row"
       >
         <input
-          className="input input-bordered input-warning w-full max-w-xs"
+          className="input input-bordered input-warning w-3/5 sm:w-1/5"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -79,7 +102,15 @@ const App = () => {
   );
 };
 
-const date = new Date()
-const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+const date = new Date();
+const weekday = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 export default App;
